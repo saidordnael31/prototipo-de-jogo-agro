@@ -34,8 +34,8 @@ export function StartScreen({ onStart }: Props) {
             {MISSION_NAME}
           </p>
           <p className="mt-1 text-sm leading-relaxed text-foreground text-pretty">
-            Você é o operador de uma fazenda de café futurista em Minas Gerais. Percorra o mapa,
-            ative as 4 zonas em sequência e proteja a safra contra riscos de mercado.
+            Engine Phaser 3 com mapa real, física e sprites. Percorra a fazenda, ative as 4 zonas
+            em sequência e proteja a safra contra riscos de mercado.
           </p>
           <div className="mt-2 flex flex-wrap items-center gap-3 text-[11px] text-muted-foreground">
             <span className="flex items-center gap-1">
