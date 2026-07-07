@@ -1,7 +1,7 @@
 import { Sprout, Warehouse, Truck, Container, type LucideProps } from 'lucide-react'
-import type { ZoneConfig } from '@/lib/game/config'
+import type { ZoneIcon as ZoneIconType } from '@/types/game'
 
-const MAP = {
+const ICON_MAP = {
   sprout: Sprout,
   warehouse: Warehouse,
   truck: Truck,
@@ -11,7 +11,7 @@ const MAP = {
 export function ZoneIcon({
   icon,
   ...props
-}: { icon: ZoneConfig['icon'] } & LucideProps) {
-  const Cmp = MAP[icon]
-  return <Cmp {...props} />
+}: { icon: ZoneIconType } & LucideProps) {
+  const Icon = ICON_MAP[icon]
+  return <Icon {...props} />
 }
