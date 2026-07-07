@@ -4,12 +4,12 @@ export const MISSION_NAME = 'Missão Café Brasil'
 export const MISSION_DURATION = 45
 export const EVENT_INTERVAL = 10
 export const POINTS_PER_ZONE = 25
-export const PLAYER_SPEED = 42
-export const ZONE_RADIUS = 12
-export const MAP_CLAMP_MIN = 5
-export const MAP_CLAMP_MAX = 95
+export const PLAYER_SPEED = 48
+export const ZONE_RADIUS = 13
+export const MAP_CLAMP_MIN = 4
+export const MAP_CLAMP_MAX = 96
 export const START_POSITION = { x: 50, y: 50 }
-export const WORLD_ZOOM = 1.85
+export const WORLD_ZOOM = 2.4
 
 export const OBJECTIVE_ORDER: ZoneId[] = ['lavoura', 'armazem', 'caminhao', 'silo']
 

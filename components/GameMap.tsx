@@ -18,6 +18,20 @@ type Props = {
   isMoving: boolean
 }
 
+const CROP_PATCHES = [
+  { x: 18, y: 18, w: 14, h: 12 },
+  { x: 68, y: 18, w: 14, h: 12 },
+  { x: 18, y: 70, w: 14, h: 12 },
+  { x: 68, y: 70, w: 14, h: 12 },
+  { x: 42, y: 42, w: 16, h: 16 },
+]
+
+const TREES = [
+  { x: 8, y: 35 }, { x: 92, y: 35 }, { x: 8, y: 65 }, { x: 92, y: 65 },
+  { x: 35, y: 8 }, { x: 65, y: 8 }, { x: 35, y: 92 }, { x: 65, y: 92 },
+  { x: 30, y: 50 }, { x: 70, y: 50 }, { x: 50, y: 30 }, { x: 50, y: 70 },
+]
+
 export function GameMap({
   playerPosition,
   playerDirection,
@@ -33,19 +47,16 @@ export function GameMap({
   return (
     <motion.div
       key={mapPulse}
-      animate={mapPulse > 0 ? { scale: [1, 1.015, 1] } : {}}
-      transition={{ duration: 0.4 }}
-      className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl border border-emerald/25 shadow-[0_0_60px_-15px_oklch(0.74_0.16_158_/_0.45)]"
+      animate={mapPulse > 0 ? { scale: [1, 1.02, 1] } : {}}
+      transition={{ duration: 0.35 }}
+      className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl border-2 border-emerald/30 shadow-[0_0_80px_-10px_oklch(0.74_0.16_158_/_0.5)]"
     >
-      {/* Viewport com câmera */}
       <div
-        className="absolute inset-0 will-change-transform"
-        style={{
-          transform: `translate(${camera.x}%, ${camera.y}%)`,
-        }}
+        className="absolute inset-0 transition-transform duration-75 ease-out will-change-transform"
+        style={{ transform: `translate(${camera.x}%, ${camera.y}%)` }}
       >
         <div
-          className="relative h-full w-full"
+          className="relative"
           style={{
             width: `${WORLD_ZOOM * 100}%`,
             height: `${WORLD_ZOOM * 100}%`,
@@ -53,109 +64,88 @@ export function GameMap({
             marginTop: `${-(WORLD_ZOOM - 1) * 50}%`,
           }}
         >
-          {/* Terreno com tiles de fazenda */}
+          {/* Base terreno */}
           <div
             className="absolute inset-0"
             style={{
               background: `
-                repeating-linear-gradient(
-                  0deg,
-                  oklch(0.28 0.06 145 / 0.15) 0px,
-                  oklch(0.28 0.06 145 / 0.15) 1px,
-                  transparent 1px,
-                  transparent 16px
-                ),
-                repeating-linear-gradient(
-                  90deg,
-                  oklch(0.28 0.06 145 / 0.15) 0px,
-                  oklch(0.28 0.06 145 / 0.15) 1px,
-                  transparent 1px,
-                  transparent 16px
-                ),
-                repeating-linear-gradient(
-                  45deg,
-                  oklch(0.22 0.05 140 / 0.3) 0px,
-                  oklch(0.22 0.05 140 / 0.3) 8px,
-                  oklch(0.26 0.06 150 / 0.25) 8px,
-                  oklch(0.26 0.06 150 / 0.25) 16px
-                ),
-                radial-gradient(circle at 50% 50%, oklch(0.3 0.07 145), oklch(0.18 0.04 255))
+                radial-gradient(ellipse 80% 60% at 50% 55%, oklch(0.32 0.08 145), oklch(0.2 0.05 255) 70%),
+                repeating-linear-gradient(0deg, transparent, transparent 11px, oklch(0.25 0.06 140 / 0.2) 11px, oklch(0.25 0.06 140 / 0.2) 12px),
+                repeating-linear-gradient(90deg, transparent, transparent 11px, oklch(0.25 0.06 140 / 0.2) 11px, oklch(0.25 0.06 140 / 0.2) 12px)
               `,
             }}
           />
 
-          {/* Estradas de terra */}
-          <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <path
-              d="M50 5 L50 95 M5 50 L95 50"
-              fill="none"
-              stroke="oklch(0.45 0.05 70)"
-              strokeWidth="4"
-              strokeOpacity="0.4"
-              strokeLinecap="round"
-            />
-            <path
-              d="M15 15 Q 50 50 85 85"
-              fill="none"
-              stroke="oklch(0.42 0.04 65)"
-              strokeWidth="2.5"
-              strokeOpacity="0.35"
-              strokeDasharray="3 2"
-            />
-            <path
-              d="M85 15 Q 50 50 15 85"
-              fill="none"
-              stroke="oklch(0.42 0.04 65)"
-              strokeWidth="2.5"
-              strokeOpacity="0.35"
-              strokeDasharray="3 2"
-            />
+          {/* Cerca perimetral */}
+          <div className="absolute inset-[3%] rounded-lg border-4 border-dashed border-[oklch(0.5_0.06_60)]/40" />
 
+          {/* Talhões de café */}
+          {CROP_PATCHES.map((p, i) => (
+            <div
+              key={i}
+              className="absolute rounded-md border border-emerald/20"
+              style={{
+                left: `${p.x}%`,
+                top: `${p.y}%`,
+                width: `${p.w}%`,
+                height: `${p.h}%`,
+                background: `repeating-linear-gradient(90deg, oklch(0.35 0.1 145 / 0.5) 0px, oklch(0.35 0.1 145 / 0.5) 3px, oklch(0.3 0.08 140 / 0.4) 3px, oklch(0.3 0.08 140 / 0.4) 6px)`,
+              }}
+            />
+          ))}
+
+          {/* Lago */}
+          <div
+            className="absolute rounded-full bg-[oklch(0.45_0.08_230)]/40 blur-[1px]"
+            style={{ left: '44%', top: '58%', width: '12%', height: '8%' }}
+          >
+            <div className="absolute inset-1 rounded-full bg-[oklch(0.5_0.1_230)]/30 animate-pulse" />
+          </div>
+
+          {/* Estradas */}
+          <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M50 2 L50 98" fill="none" stroke="oklch(0.48 0.05 65)" strokeWidth="5.5" strokeOpacity="0.55" />
+            <path d="M2 50 L98 50" fill="none" stroke="oklch(0.48 0.05 65)" strokeWidth="5.5" strokeOpacity="0.55" />
+            <path d="M12 12 Q 50 50 88 88" fill="none" stroke="oklch(0.42 0.04 60)" strokeWidth="3" strokeOpacity="0.4" strokeDasharray="4 3" />
+            <path d="M88 12 Q 50 50 12 88" fill="none" stroke="oklch(0.42 0.04 60)" strokeWidth="3" strokeOpacity="0.4" strokeDasharray="4 3" />
             {objective && !completedZones.includes(objective.id) && (
-              <line
-                x1={playerPosition.x}
-                y1={playerPosition.y}
-                x2={objective.x}
-                y2={objective.y}
-                stroke="oklch(0.83 0.14 85)"
-                strokeWidth="0.8"
-                strokeOpacity="0.7"
-                strokeDasharray="2 2"
-                className="route-flow"
-              />
+              <>
+                <line
+                  x1={playerPosition.x}
+                  y1={playerPosition.y}
+                  x2={objective.x}
+                  y2={objective.y}
+                  stroke="oklch(0.83 0.14 85)"
+                  strokeWidth="1"
+                  strokeOpacity="0.5"
+                  strokeDasharray="2 3"
+                  className="route-flow"
+                />
+                <circle cx={objective.x} cy={objective.y} r="3" fill="none" stroke="oklch(0.83 0.14 85)" strokeWidth="0.5" strokeOpacity="0.6" className="route-flow" />
+              </>
             )}
           </svg>
 
-          {/* Centro — Torre de Dados */}
-          <div
-            className="absolute -translate-x-1/2 -translate-y-1/2"
-            style={{ left: '50%', top: '50%' }}
-          >
-            <div className="relative flex flex-col items-center">
-              <div className="h-8 w-10 rounded-t-lg border border-gold/40 bg-gradient-to-b from-[oklch(0.35_0.04_255)] to-[oklch(0.25_0.04_255)] shadow-lg">
-                <div className="mx-auto mt-1 h-1.5 w-1.5 rounded-full bg-gold animate-pulse" />
-                <div className="mx-auto mt-0.5 h-3 w-5 rounded-sm bg-emerald/20" />
-              </div>
-              <span className="mt-0.5 rounded border border-gold/30 bg-background/70 px-1 py-0.5 text-[6px] font-bold uppercase tracking-wider text-gold backdrop-blur-sm">
-                Torre
-              </span>
-            </div>
-          </div>
-
-          {/* Árvores decorativas */}
-          {[
-            { x: 10, y: 50 }, { x: 90, y: 50 }, { x: 50, y: 10 }, { x: 50, y: 90 },
-            { x: 35, y: 45 }, { x: 65, y: 55 },
-          ].map((t, i) => (
-            <div
-              key={i}
-              className="absolute -translate-x-1/2 -translate-y-1/2"
-              style={{ left: `${t.x}%`, top: `${t.y}%` }}
-            >
-              <div className="h-3 w-3 rounded-full bg-emerald/50 shadow-[0_0_8px_oklch(0.74_0.16_158)]" />
-              <div className="mx-auto h-2 w-1 rounded-b-sm bg-[oklch(0.4_0.05_60)]" />
+          {/* Árvores */}
+          {TREES.map((t, i) => (
+            <div key={i} className="absolute -translate-x-1/2 -translate-y-1/2" style={{ left: `${t.x}%`, top: `${t.y}%` }}>
+              <div className="h-4 w-5 rounded-full bg-emerald/60 shadow-[0_2px_4px_oklch(0.2_0.04_140)]" style={{ borderRadius: '50% 50% 45% 45%' }} />
+              <div className="mx-auto h-2.5 w-1.5 rounded-b-sm bg-[oklch(0.38_0.06_55)]" />
             </div>
           ))}
+
+          {/* Torre central */}
+          <div className="absolute -translate-x-1/2 -translate-y-1/2" style={{ left: '50%', top: '50%' }}>
+            <div className="relative">
+              <div className="h-10 w-12 rounded-t-lg border-2 border-gold/50 bg-gradient-to-b from-[oklch(0.38_0.04_255)] to-[oklch(0.22_0.04_255)] shadow-[0_4px_12px_rgba(0,0,0,0.4)]">
+                <div className="mx-auto mt-1.5 flex justify-center gap-1">
+                  <div className="h-2 w-2 animate-pulse rounded-full bg-gold shadow-[0_0_6px_oklch(0.83_0.14_85)]" />
+                </div>
+                <div className="mx-auto mt-1 h-4 w-8 rounded-sm border border-emerald/30 bg-emerald/10" />
+              </div>
+              <div className="absolute -inset-2 rounded-lg border border-gold/20 animate-pulse" />
+            </div>
+          </div>
 
           {MISSION_ZONES.map((zone) => (
             <MissionZone
@@ -167,15 +157,10 @@ export function GameMap({
             />
           ))}
 
-          <PlayerMarker
-            position={playerPosition}
-            direction={playerDirection}
-            isMoving={isMoving}
-          />
+          <PlayerMarker position={playerPosition} direction={playerDirection} isMoving={isMoving} />
         </div>
       </div>
 
-      {/* Waypoint na borda (estilo GTA) */}
       {objective && !completedZones.includes(objective.id) && (
         <ObjectiveWaypoint
           playerPosition={playerPosition}
@@ -184,11 +169,16 @@ export function GameMap({
         />
       )}
 
-      {/* Vinheta + borda do viewport */}
-      <div className="pointer-events-none absolute inset-0 rounded-2xl shadow-[inset_0_0_60px_12px_oklch(0.1_0.03_258_/_0.6)]" />
-      <div className="pointer-events-none absolute left-2 top-2 flex items-center gap-1 rounded-full border border-emerald/30 bg-background/60 px-2 py-0.5 text-[7px] font-medium uppercase tracking-wider text-emerald backdrop-blur-sm">
+      <div className="pointer-events-none absolute inset-0 rounded-2xl shadow-[inset_0_0_80px_16px_oklch(0.08_0.03_258_/_0.75)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,oklch(0.1_0.03_258_/_0.5)_100%)]" />
+
+      <div className="pointer-events-none absolute left-2 top-2 flex items-center gap-1 rounded-full border border-emerald/40 bg-background/70 px-2 py-0.5 text-[7px] font-bold uppercase tracking-wider text-emerald backdrop-blur-md">
         <Navigation className="h-2.5 w-2.5" />
-        Ao vivo
+        AO VIVO
+      </div>
+
+      <div className="pointer-events-none absolute bottom-2 left-2 rounded border border-white/10 bg-black/40 px-1.5 py-0.5 text-[7px] font-mono text-white/60 backdrop-blur-sm">
+        ZOOM {WORLD_ZOOM}x
       </div>
     </motion.div>
   )
