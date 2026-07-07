@@ -12,16 +12,20 @@ import {
   TrendingUp,
   ShieldCheck,
   Lightbulb,
+  Target,
+  ShieldAlert,
 } from 'lucide-react'
+import { ZONE_RISK_LABEL, ZONES, type ZoneId } from '@/lib/game/config'
 
 type Props = {
   won: boolean
   score: number
   objectivesDone: number
+  missingZones: ZoneId[]
   onRestart: () => void
 }
 
-export function EndScreen({ won, score, objectivesDone, onRestart }: Props) {
+export function EndScreen({ won, score, objectivesDone, missingZones, onRestart }: Props) {
   const [portfolioNote, setPortfolioNote] = useState(false)
 
   return (
@@ -55,7 +59,7 @@ export function EndScreen({ won, score, objectivesDone, onRestart }: Props) {
             {won ? 'Missão Concluída' : 'Missão Incompleta'}
           </h2>
           <p className="text-xs text-muted-foreground">
-            {won ? `${objectivesDone}/4 zonas protegidas` : 'Safra parcialmente protegida'}
+            {won ? 'Safra protegida com eficiência' : 'Safra parcialmente protegida'}
           </p>
         </motion.div>
 
@@ -72,14 +76,47 @@ export function EndScreen({ won, score, objectivesDone, onRestart }: Props) {
               label="Drawdown Evitado"
               value="12,4%"
             />
-            <StatRow icon={<Award className="h-4 w-4" />} label="XP ganho" value="+420" />
-            <div className="rounded-lg border border-gold/40 bg-gold/10 px-3 py-2">
-              <p className="flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-widest text-gold">
-                <Award className="h-3.5 w-3.5" />
-                Badge desbloqueado
-              </p>
-              <p className="mt-0.5 text-sm font-bold text-foreground">Operador Regional</p>
+
+            {/* Barra de XP animada */}
+            <div className="rounded-lg border border-border bg-card/60 px-3 py-2">
+              <div className="flex items-center justify-between">
+                <span className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <span className="text-emerald">
+                    <Award className="h-4 w-4" />
+                  </span>
+                  XP ganho
+                </span>
+                <span className="font-mono text-sm font-bold text-emerald">+420</span>
+              </div>
+              <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-secondary">
+                <motion.div
+                  initial={{ width: '0%' }}
+                  animate={{ width: '84%' }}
+                  transition={{ duration: 1.1, ease: 'easeOut', delay: 0.2 }}
+                  className="h-full rounded-full bg-gradient-to-r from-emerald to-gold"
+                />
+              </div>
+              <p className="mt-1 text-[10px] text-muted-foreground">Nível regional — 84%</p>
             </div>
+
+            {/* Card de badge */}
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="flex items-center gap-3 rounded-lg border border-gold/40 bg-gold/10 px-3 py-2.5"
+            >
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-gold/50 bg-gold/15 text-gold shadow-[0_0_18px_-4px_oklch(0.83_0.14_85)]">
+                <Award className="h-5 w-5" strokeWidth={2} />
+              </div>
+              <div className="min-w-0">
+                <p className="text-[10px] font-medium uppercase tracking-widest text-gold">
+                  Badge desbloqueado
+                </p>
+                <p className="text-sm font-bold text-foreground">Operador Regional</p>
+              </div>
+            </motion.div>
+
             <StatRow
               icon={<TrendingUp className="h-4 w-4" />}
               label="Ranking"
@@ -94,6 +131,32 @@ export function EndScreen({ won, score, objectivesDone, onRestart }: Props) {
               value={`${score}/100`}
               highlight
             />
+            <StatRow
+              icon={<Target className="h-4 w-4" />}
+              label="Objetivos concluídos"
+              value={`${objectivesDone}/${ZONES.length}`}
+            />
+
+            {/* Riscos não mitigados */}
+            {missingZones.length > 0 && (
+              <div className="rounded-lg border border-destructive/40 bg-destructive/10 px-3 py-2">
+                <p className="flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-widest text-destructive">
+                  <ShieldAlert className="h-3.5 w-3.5" />
+                  Riscos não mitigados
+                </p>
+                <div className="mt-1.5 flex flex-wrap gap-1.5">
+                  {missingZones.map((id) => (
+                    <span
+                      key={id}
+                      className="rounded-full border border-destructive/40 bg-destructive/15 px-2 py-0.5 text-[11px] font-semibold text-foreground"
+                    >
+                      {ZONE_RISK_LABEL[id]}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div className="flex items-start gap-2 rounded-lg border border-gold/40 bg-gold/10 px-3 py-2.5">
               <Lightbulb className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
               <div>

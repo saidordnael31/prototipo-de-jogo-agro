@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { Radio } from 'lucide-react'
 
 type Props = {
@@ -69,6 +69,32 @@ export function Controls({ onMove, onActivate, canActivate }: Props) {
 
       {/* Botão ativar */}
       <div className="flex flex-col items-center gap-1">
+        <div className="flex h-4 items-center">
+          <AnimatePresence mode="wait">
+            {canActivate ? (
+              <motion.span
+                key="near"
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -4 }}
+                className="flex items-center gap-1 rounded-full border border-gold/60 bg-gold/15 px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest text-gold"
+              >
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-gold" />
+                Zona detectada
+              </motion.span>
+            ) : (
+              <motion.span
+                key="far"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="text-[9px] font-medium uppercase tracking-widest text-muted-foreground"
+              >
+                Aproxime-se de uma zona
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </div>
         <motion.button
           type="button"
           onClick={onActivate}
