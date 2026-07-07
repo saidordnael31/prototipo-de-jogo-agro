@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "import-trees": "python3 scripts/process-imported-trees.py"
+    "import-trees": "python3 scripts/process-imported-trees.py",
+    "setup-assets": "python3 scripts/setup-bulk-assets.py"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",

@@ -13,7 +13,7 @@ import {
   type ZoneId,
 } from '../missionData'
 import { gameAsset } from '../assetPath'
-import { IMPORTED_TREES } from '../importedAssets'
+import { IMPORTED_BLOCKS, IMPORTED_TREES } from '../importedAssets'
 
 const CENTER = WORLD_SIZE / 2
 
@@ -39,7 +39,7 @@ export class FarmScene extends Phaser.Scene {
   preload() {
     const files = [
       'grass0.png', 'grass1.png', 'grass2.png', 'grass3.png',
-      'road.png', 'tree.png', 'farmer.png',
+      'road.png', 'farmer.png',
       'lavoura.png', 'armazem.png', 'caminhao.png', 'silo.png', 'particle.png',
     ]
     for (const f of files) {
@@ -51,6 +51,9 @@ export class FarmScene extends Phaser.Scene {
       }
     }
     for (const entry of IMPORTED_TREES) {
+      this.load.image(entry.key, gameAsset(entry.file))
+    }
+    for (const entry of IMPORTED_BLOCKS) {
       this.load.image(entry.key, gameAsset(entry.file))
     }
     this.load.on('loaderror', (file: { key: string; url: string }) => {
@@ -86,10 +89,36 @@ export class FarmScene extends Phaser.Scene {
   }
 
   private buildWorld() {
-    // Um tileSprite em vez de ~3900 imagens (travava o browser)
+    // Chão estilo KayKit (blocos voxel)
+    const groundKey = this.textures.exists('block_grass') ? 'block_grass' : 'grass0'
     this.add
-      .tileSprite(CENTER, CENTER, WORLD_SIZE, WORLD_SIZE, 'grass0')
+      .tileSprite(CENTER, CENTER, WORLD_SIZE, WORLD_SIZE, groundKey)
       .setDepth(0)
+      .setTileScale(4, 4)
+
+    // Manchas de terreno (areia, pedra, água)
+    const patches: Array<[string, number, number, number]> = [
+      ['block_sand', 450, 550, 4],
+      ['block_sand', 1550, 600, 3],
+      ['block_stone', 1000, 450, 3],
+      ['block_water', 950, 1050, 3],
+      ['block_ore', 350, 1350, 3],
+      ['block_snow', 1650, 1400, 3],
+      ['block_wood', 550, 350, 3],
+      ['block_dirt', 1400, 350, 4],
+      ['block_wheat', 750, 1250, 4],
+      ['block_leaves', 1250, 550, 3],
+      ['block_ice', 1750, 900, 2],
+      ['block_lava', 250, 750, 2],
+    ]
+    for (const [key, x, y, count] of patches) {
+      if (!this.textures.exists(key)) continue
+      for (let i = 0; i < count; i++) {
+        const ox = (i % 3) * 68 - 68
+        const oy = Math.floor(i / 3) * 68 - 34
+        this.add.image(x + ox, y + oy, key).setDepth(1).setScale(2.2)
+      }
+    }
 
     const tile = 32
     for (let i = 0; i < WORLD_SIZE; i += tile) {
@@ -102,6 +131,8 @@ export class FarmScene extends Phaser.Scene {
       [200, 600], [500, 200], [900, 700], [1100, 400], [1500, 900],
       [700, 1500], [1300, 1200], [1700, 600], [600, 1100], [1000, 1000],
       [250, 1200], [1800, 1400], [1400, 200], [300, 900],
+      [800, 300], [1200, 800], [1600, 1100], [400, 1600], [1100, 1500],
+      [600, 700], [1450, 950], [950, 1350], [1750, 350], [150, 450],
     ]
     for (let i = 0; i < treePositions.length; i++) {
       const [x, y] = treePositions[i]
