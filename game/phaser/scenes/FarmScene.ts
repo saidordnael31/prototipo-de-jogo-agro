@@ -13,6 +13,7 @@ import {
   type ZoneId,
 } from '../missionData'
 import { gameAsset } from '../assetPath'
+import { IMPORTED_TREES } from '../importedAssets'
 
 const CENTER = WORLD_SIZE / 2
 
@@ -45,9 +46,12 @@ export class FarmScene extends Phaser.Scene {
       const key = f.replace('.png', '')
       if (key === 'farmer') {
         this.load.spritesheet(key, gameAsset(f), { frameWidth: 32, frameHeight: 32 })
-      } else {
+      } else if (key !== 'tree') {
         this.load.image(key, gameAsset(f))
       }
+    }
+    for (const entry of IMPORTED_TREES) {
+      this.load.image(entry.key, gameAsset(entry.file))
     }
     this.load.on('loaderror', (file: { key: string; url: string }) => {
       console.error('[HarvestOps] Falha ao carregar asset:', file.key, file.url)
@@ -99,12 +103,18 @@ export class FarmScene extends Phaser.Scene {
       [700, 1500], [1300, 1200], [1700, 600], [600, 1100], [1000, 1000],
       [250, 1200], [1800, 1400], [1400, 200], [300, 900],
     ]
-    for (const [x, y] of treePositions) {
+    for (let i = 0; i < treePositions.length; i++) {
+      const [x, y] = treePositions[i]
       if (Math.hypot(x - CENTER, y - CENTER) < 120) continue
-      const t = this.trees.create(x, y, 'tree') as Phaser.Physics.Arcade.Sprite
-      t.setDepth(5).setScale(1.2)
+      const entry = IMPORTED_TREES[i % IMPORTED_TREES.length]
+      const t = this.trees.create(x, y, entry.key) as Phaser.Physics.Arcade.Sprite
+      const scale = 0.22 + (i % 3) * 0.04
+      t.setDepth(5).setScale(scale).setOrigin(0.5, 0.92)
       const body = t.body as Phaser.Physics.Arcade.StaticBody
-      body.setSize(20, 16).setOffset(6, 24)
+      body.setSize(t.displayWidth * 0.35, t.displayHeight * 0.2).setOffset(
+        t.displayWidth * 0.32,
+        t.displayHeight * 0.65,
+      )
     }
 
     const tower = this.add.rectangle(CENTER, CENTER, 48, 48, 0xd4a017, 0.9).setDepth(3)

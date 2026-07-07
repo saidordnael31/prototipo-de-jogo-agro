@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "import-trees": "python3 scripts/process-imported-trees.py"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",

@@ -1,0 +1,12 @@
+{
+  "trees": [
+    { "key": "_tree_10_00000", "file": "imported/trees/processed/_tree_10_00000.png" },
+    { "key": "_tree_10_10000", "file": "imported/trees/processed/_tree_10_10000.png" },
+    { "key": "_tree_10_20000", "file": "imported/trees/processed/_tree_10_20000.png" },
+    { "key": "_tree_10_30000", "file": "imported/trees/processed/_tree_10_30000.png" },
+    { "key": "_tree_10_40000", "file": "imported/trees/processed/_tree_10_40000.png" },
+    { "key": "_tree_10_50000", "file": "imported/trees/processed/_tree_10_50000.png" },
+    { "key": "_tree_10_60000", "file": "imported/trees/processed/_tree_10_60000.png" },
+    { "key": "_tree_10_70000", "file": "imported/trees/processed/_tree_10_70000.png" }
+  ]
+}
