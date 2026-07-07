@@ -12,6 +12,7 @@ import {
   type HudState,
   type ZoneId,
 } from '../missionData'
+import { gameAsset } from '../assetPath'
 
 const CENTER = WORLD_SIZE / 2
 
@@ -35,18 +36,22 @@ export class FarmScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('grass0', '/game-assets/grass0.png')
-    this.load.image('grass1', '/game-assets/grass1.png')
-    this.load.image('grass2', '/game-assets/grass2.png')
-    this.load.image('grass3', '/game-assets/grass3.png')
-    this.load.image('road', '/game-assets/road.png')
-    this.load.image('tree', '/game-assets/tree.png')
-    this.load.spritesheet('farmer', '/game-assets/farmer.png', { frameWidth: 32, frameHeight: 32 })
-    this.load.image('lavoura', '/game-assets/lavoura.png')
-    this.load.image('armazem', '/game-assets/armazem.png')
-    this.load.image('caminhao', '/game-assets/caminhao.png')
-    this.load.image('silo', '/game-assets/silo.png')
-    this.load.image('particle', '/game-assets/particle.png')
+    const files = [
+      'grass0.png', 'grass1.png', 'grass2.png', 'grass3.png',
+      'road.png', 'tree.png', 'farmer.png',
+      'lavoura.png', 'armazem.png', 'caminhao.png', 'silo.png', 'particle.png',
+    ]
+    for (const f of files) {
+      const key = f.replace('.png', '')
+      if (key === 'farmer') {
+        this.load.spritesheet(key, gameAsset(f), { frameWidth: 32, frameHeight: 32 })
+      } else {
+        this.load.image(key, gameAsset(f))
+      }
+    }
+    this.load.on('loaderror', (file: { key: string; url: string }) => {
+      console.error('[HarvestOps] Falha ao carregar asset:', file.key, file.url)
+    })
   }
 
   create() {
@@ -77,15 +82,12 @@ export class FarmScene extends Phaser.Scene {
   }
 
   private buildWorld() {
-    const tiles = ['grass0', 'grass1', 'grass2', 'grass3']
-    const tile = 32
-    for (let ty = 0; ty < WORLD_SIZE / tile; ty++) {
-      for (let tx = 0; tx < WORLD_SIZE / tile; tx++) {
-        const key = tiles[(tx + ty) % 4]
-        this.add.image(tx * tile + 16, ty * tile + 16, key).setDepth(0)
-      }
-    }
+    // Um tileSprite em vez de ~3900 imagens (travava o browser)
+    this.add
+      .tileSprite(CENTER, CENTER, WORLD_SIZE, WORLD_SIZE, 'grass0')
+      .setDepth(0)
 
+    const tile = 32
     for (let i = 0; i < WORLD_SIZE; i += tile) {
       this.add.image(CENTER, i + 16, 'road').setDepth(1).setAlpha(0.85)
       this.add.image(i + 16, CENTER, 'road').setDepth(1).setAlpha(0.85).setAngle(90)

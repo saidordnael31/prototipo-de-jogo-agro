@@ -20,6 +20,7 @@ export function PhaserHarvestOps({ onMissionEnd }: Props) {
     marketEvent: 'Mercado estável — monitorando',
     canActivate: false,
   })
+  const [engineReady, setEngineReady] = useState(false)
 
   const onHudUpdate = useCallback((state: HudState) => setHud(state), [])
   const handleEnd = useCallback(
@@ -38,6 +39,9 @@ export function PhaserHarvestOps({ onMissionEnd }: Props) {
         onMissionEnd: handleEnd,
       })
       gameRef.current = game
+      game.events.once('ready', () => setEngineReady(true))
+      // fallback se evento ready já passou
+      setTimeout(() => setEngineReady(true), 800)
     })
 
     return () => {
@@ -90,7 +94,13 @@ export function PhaserHarvestOps({ onMissionEnd }: Props) {
         ref={containerRef}
         className="relative w-full overflow-hidden rounded-2xl border-2 border-emerald/30 shadow-[0_0_40px_-8px_oklch(0.74_0.16_158)]"
         style={{ aspectRatio: '390/480', minHeight: 280 }}
-      />
+      >
+        {!engineReady && (
+          <div className="absolute inset-0 z-10 flex items-center justify-center bg-[#0f1a2e] text-xs text-emerald">
+            Carregando engine e sprites…
+          </div>
+        )}
+      </div>
 
       <div className="flex items-end justify-between gap-3 pb-1">
         <MobileJoystick onMove={sendJoystick} />
