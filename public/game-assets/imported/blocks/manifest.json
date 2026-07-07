@@ -1,0 +1,16 @@
+{
+  "blocks": [
+    { "key": "block_grass", "file": "imported/blocks/block_grass.png" },
+    { "key": "block_dirt", "file": "imported/blocks/block_dirt.png" },
+    { "key": "block_sand", "file": "imported/blocks/block_sand.png" },
+    { "key": "block_stone", "file": "imported/blocks/block_stone.png" },
+    { "key": "block_water", "file": "imported/blocks/block_water.png" },
+    { "key": "block_wood", "file": "imported/blocks/block_wood.png" },
+    { "key": "block_snow", "file": "imported/blocks/block_snow.png" },
+    { "key": "block_ore", "file": "imported/blocks/block_ore.png" },
+    { "key": "block_wheat", "file": "imported/blocks/block_wheat.png" },
+    { "key": "block_leaves", "file": "imported/blocks/block_leaves.png" },
+    { "key": "block_lava", "file": "imported/blocks/block_lava.png" },
+    { "key": "block_ice", "file": "imported/blocks/block_ice.png" }
+  ]
+}

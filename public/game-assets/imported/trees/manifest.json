@@ -1,12 +1,196 @@
 {
   "trees": [
-    { "key": "_tree_10_00000", "file": "imported/trees/processed/_tree_10_00000.png" },
-    { "key": "_tree_10_10000", "file": "imported/trees/processed/_tree_10_10000.png" },
-    { "key": "_tree_10_20000", "file": "imported/trees/processed/_tree_10_20000.png" },
-    { "key": "_tree_10_30000", "file": "imported/trees/processed/_tree_10_30000.png" },
-    { "key": "_tree_10_40000", "file": "imported/trees/processed/_tree_10_40000.png" },
-    { "key": "_tree_10_50000", "file": "imported/trees/processed/_tree_10_50000.png" },
-    { "key": "_tree_10_60000", "file": "imported/trees/processed/_tree_10_60000.png" },
-    { "key": "_tree_10_70000", "file": "imported/trees/processed/_tree_10_70000.png" }
+    {
+      "key": "tree_001",
+      "file": "imported/trees/processed/tree_001.png"
+    },
+    {
+      "key": "tree_002",
+      "file": "imported/trees/processed/tree_002.png"
+    },
+    {
+      "key": "tree_003",
+      "file": "imported/trees/processed/tree_003.png"
+    },
+    {
+      "key": "tree_004",
+      "file": "imported/trees/processed/tree_004.png"
+    },
+    {
+      "key": "tree_005",
+      "file": "imported/trees/processed/tree_005.png"
+    },
+    {
+      "key": "tree_006",
+      "file": "imported/trees/processed/tree_006.png"
+    },
+    {
+      "key": "tree_007",
+      "file": "imported/trees/processed/tree_007.png"
+    },
+    {
+      "key": "tree_008",
+      "file": "imported/trees/processed/tree_008.png"
+    },
+    {
+      "key": "tree_009",
+      "file": "imported/trees/processed/tree_009.png"
+    },
+    {
+      "key": "tree_010",
+      "file": "imported/trees/processed/tree_010.png"
+    },
+    {
+      "key": "tree_011",
+      "file": "imported/trees/processed/tree_011.png"
+    },
+    {
+      "key": "tree_012",
+      "file": "imported/trees/processed/tree_012.png"
+    },
+    {
+      "key": "tree_013",
+      "file": "imported/trees/processed/tree_013.png"
+    },
+    {
+      "key": "tree_014",
+      "file": "imported/trees/processed/tree_014.png"
+    },
+    {
+      "key": "tree_015",
+      "file": "imported/trees/processed/tree_015.png"
+    },
+    {
+      "key": "tree_016",
+      "file": "imported/trees/processed/tree_016.png"
+    },
+    {
+      "key": "tree_017",
+      "file": "imported/trees/processed/tree_017.png"
+    },
+    {
+      "key": "tree_018",
+      "file": "imported/trees/processed/tree_018.png"
+    },
+    {
+      "key": "tree_019",
+      "file": "imported/trees/processed/tree_019.png"
+    },
+    {
+      "key": "tree_020",
+      "file": "imported/trees/processed/tree_020.png"
+    },
+    {
+      "key": "tree_021",
+      "file": "imported/trees/processed/tree_021.png"
+    },
+    {
+      "key": "tree_022",
+      "file": "imported/trees/processed/tree_022.png"
+    },
+    {
+      "key": "tree_023",
+      "file": "imported/trees/processed/tree_023.png"
+    },
+    {
+      "key": "tree_024",
+      "file": "imported/trees/processed/tree_024.png"
+    },
+    {
+      "key": "tree_025",
+      "file": "imported/trees/processed/tree_025.png"
+    },
+    {
+      "key": "tree_026",
+      "file": "imported/trees/processed/tree_026.png"
+    },
+    {
+      "key": "tree_027",
+      "file": "imported/trees/processed/tree_027.png"
+    },
+    {
+      "key": "tree_028",
+      "file": "imported/trees/processed/tree_028.png"
+    },
+    {
+      "key": "tree_029",
+      "file": "imported/trees/processed/tree_029.png"
+    },
+    {
+      "key": "tree_030",
+      "file": "imported/trees/processed/tree_030.png"
+    },
+    {
+      "key": "tree_031",
+      "file": "imported/trees/processed/tree_031.png"
+    },
+    {
+      "key": "tree_032",
+      "file": "imported/trees/processed/tree_032.png"
+    },
+    {
+      "key": "tree_033",
+      "file": "imported/trees/processed/tree_033.png"
+    },
+    {
+      "key": "tree_034",
+      "file": "imported/trees/processed/tree_034.png"
+    },
+    {
+      "key": "tree_035",
+      "file": "imported/trees/processed/tree_035.png"
+    },
+    {
+      "key": "tree_036",
+      "file": "imported/trees/processed/tree_036.png"
+    },
+    {
+      "key": "tree_037",
+      "file": "imported/trees/processed/tree_037.png"
+    },
+    {
+      "key": "tree_038",
+      "file": "imported/trees/processed/tree_038.png"
+    },
+    {
+      "key": "tree_039",
+      "file": "imported/trees/processed/tree_039.png"
+    },
+    {
+      "key": "tree_040",
+      "file": "imported/trees/processed/tree_040.png"
+    },
+    {
+      "key": "tree_041",
+      "file": "imported/trees/processed/tree_041.png"
+    },
+    {
+      "key": "tree_042",
+      "file": "imported/trees/processed/tree_042.png"
+    },
+    {
+      "key": "tree_043",
+      "file": "imported/trees/processed/tree_043.png"
+    },
+    {
+      "key": "tree_044",
+      "file": "imported/trees/processed/tree_044.png"
+    },
+    {
+      "key": "tree_045",
+      "file": "imported/trees/processed/tree_045.png"
+    },
+    {
+      "key": "tree_046",
+      "file": "imported/trees/processed/tree_046.png"
+    },
+    {
+      "key": "tree_047",
+      "file": "imported/trees/processed/tree_047.png"
+    },
+    {
+      "key": "tree_048",
+      "file": "imported/trees/processed/tree_048.png"
+    }
   ]
 }
