@@ -1,7 +1,7 @@
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'
-import { Clock, Target, TrendingUp, TrendingDown, Activity } from 'lucide-react'
+import { Clock, Target, TrendingUp, TrendingDown, Activity, Navigation } from 'lucide-react'
 import { MISSION_NAME, ZONES, type MarketEvent } from '@/lib/game/config'
 
 type Props = {
@@ -10,9 +10,19 @@ type Props = {
   objectivesDone: number
   event: MarketEvent
   eventPulse: number
+  guidance: string
+  allDone: boolean
 }
 
-export function Hud({ timeLeft, score, objectivesDone, event, eventPulse }: Props) {
+export function Hud({
+  timeLeft,
+  score,
+  objectivesDone,
+  event,
+  eventPulse,
+  guidance,
+  allDone,
+}: Props) {
   const seconds = Math.ceil(timeLeft)
   const low = seconds <= 10
 
@@ -89,6 +99,44 @@ export function Hud({ timeLeft, score, objectivesDone, event, eventPulse }: Prop
           ) : event.tone === 'negative' ? (
             <TrendingDown className="h-4 w-4 shrink-0 text-gold" />
           ) : null}
+        </div>
+      </div>
+
+      {/* Guia do objetivo atual */}
+      <div
+        className={[
+          'flex items-center gap-2 rounded-lg border px-3 py-1.5 backdrop-blur-sm',
+          allDone
+            ? 'border-emerald/50 bg-emerald/10'
+            : 'border-gold/40 bg-gold/[0.07]',
+        ].join(' ')}
+      >
+        <motion.span
+          animate={{ y: [0, -2, 0] }}
+          transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY }}
+          className={allDone ? 'text-emerald' : 'text-gold'}
+        >
+          <Navigation className="h-4 w-4" strokeWidth={2.5} />
+        </motion.span>
+        <div className="min-w-0 flex-1 leading-tight">
+          <p className="text-[9px] font-medium uppercase tracking-widest text-muted-foreground">
+            Próximo objetivo
+          </p>
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={guidance}
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              transition={{ duration: 0.25 }}
+              className={[
+                'truncate text-xs font-bold',
+                allDone ? 'text-emerald' : 'text-foreground',
+              ].join(' ')}
+            >
+              {guidance}
+            </motion.p>
+          </AnimatePresence>
         </div>
       </div>
     </div>
